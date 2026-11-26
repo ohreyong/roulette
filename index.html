@@ -7,35 +7,46 @@
     <link rel="stylesheet" href="main.css">
 </head>
 <body>
+
+
     <h1 id="titled"><strong>오늘의 희생양</strong></h1>
     <div class="roulette">
         <div id="pointer"></div>
         <div id="reel"></div>
         <p id="selectedid">Nan</p>
     </div>
+
+    <div id="menu">
+        <button id="controlMenuButton" onclick="controlMenu.openMenu();">X</button> <br>
+        <button class="menuButton" onclick="controlMenu.resetlist();">이름 룰렛 리셋</button> <br>
+        <button class="menuButton" id="dupbutton" onclick="controlMenu.changeWhetherCanDuplicate()">중복 룰렛으로 전환</button> <br>
+        <button id="openEditListButton">리스트 수정</button> <br>
+        <input id="inputEditList" placeholder="쉼표로 이름 구분">
+        <button id="inputEditSummit">v</button>
+        <button class="menuButton">그저 버튼</button>
+    </div>
     
 
     <script>
-        
         const tickSound = new Audio("./rouletteSound.MP3");
         tickSound.volume = 1.0;
-        let itemlistOG = ['김기백','김민근','김서영','김시온','김예은','김제희','김준서','김채원','김평근','박재우',
-            '박효은','심주완','오대성','유나은','이도경','이서현','이석준','이세한','이지민','이지윤','전은수','정주복',
-            '조도현','채서현','최선','최선웅','황동현','황윤정','황정우'];
+        let itemlistOGText = '김기백,김민근,김서영,김시온,김예은,김제희,김준서,박효은,심주완,오대성,유나은,이도경,이서현,이석준,이세한,이지미,이지윤,전은수,정주복,조도현,채서현,최선,최선웅,황동현,황윤정,황정우';
+        let itemlistOG = itemlistOGText.split(',');
         let itemlist = [];
         itemlist = [...itemlistOG];
         let tick = 0;
         let rollqueue = [];
         let isrolling = false;
-        
         const reel = document.getElementById("reel");
         const whatisit = document.getElementById("pointer");
         let reelmaxcontent = 0;
         let selected = "";
         let displayselection = document.getElementById("selectedid");
-
         let itemmax = 0;
-        
+        let canDuplicate = false;
+        let isMenuOpening = false;
+
+
         function rollingItem(){
             itemmax = itemlist.length;
             let rand = Math.floor(Math.random() * itemmax);
@@ -44,41 +55,31 @@
         function wait(ms) {
             return new Promise(resolve => setTimeout(resolve, ms));
         }
-
         reel.offsetHeight;
         reel.style.transition = "none";
         reel.style.transform = "translateX(-35px)";
         reel.offsetHeight;
         reel.style.transition =
             "transform 7s cubic-bezier(0.65, 0, 0.15, 1)";
-
-        
         let rolledList = [];
-        
         for(let i = 0; i < 5; i++){
             rolledList.push(rollingItem());
         }
-
         for(let i = 0; i < 5; i++){
             const box = document.createElement("div");            
             box.className = "item";
             box.textContent = rolledList[i];
             reel.appendChild(box);
         }
-        
         let colored = false;
-
-
         async function roll(){
             if (itemlist.length <= 0){
                 itemlist = [...itemlistOG];
             }
             isrolling = true;
             reel.innerHTML = "";
-
             reel.style.transition = "none";
-            reel.style.transform = "translateX(-35px)";
-
+            reel.style.transform = "translateX(-35px)";//523 +25379
             
             if (rolledList.length != 0){
                 rolledList = rolledList.slice(-5);
@@ -86,7 +87,6 @@
             for(let i = 0; i < 55; i++){
                 rolledList.push(rollingItem());
             }
-
             for(let i = 0; i < 60; i++){
                 const box = document.createElement("div");
                 if (i == 2){
@@ -108,28 +108,26 @@
                     reel.appendChild(box);
                 }
             }
-            for(let i = 0; i < itemlist.length; i++){
-                if(itemlist[i] == selected){itemlist.splice(i,1);}
+            if (!canDuplicate){
+                for(let i = 0; i < itemlist.length; i++){
+                    if(itemlist[i] == selected){itemlist.splice(i,1);}
+                }
             }
-            //console.log(itemlist);
+            
+
             reel.offsetHeight;
             reel.style.transition = "none";
             reel.style.transform = "translateX(-35px)";
             reel.offsetHeight;
             reel.style.transition =
                 "transform 7s cubic-bezier(0.65, 0, 0.15, 1)";
-            
             requestAnimationFrame(() => {
-                
-                
                 const target = reel.children[57];
                 const viewportWidth = document.querySelector(".roulette").clientWidth;
-
                 const move = target.offsetLeft
                     + target.offsetWidth / 2
                     - viewportWidth / 2
                     -10.4;
-
                 reel.style.transform = `translateX(-${move}px)`;
             });
             if (colored){
@@ -141,27 +139,82 @@
             tickSound.pause();
             tickSound.currentTime = 0;
             tickSound.play()
-            await wait(8350);
+            await wait(8370);
             colored = true;
             displayselection.innerHTML = `<strong>${selected}</strong> 당첨!`
             displayselection.style.opacity = "1"
             document.getElementById('selectedframe').style.border = "4px solid #fbbf24";
             document.getElementById('selectedframe').style.boxShadow = "0 0 6px #fbbf2480";
-
             await wait(2500);
             displayselection.style.opacity = "0";
             await wait(200);
             isrolling = false;
         }
-
         async function play(){
             if (isrolling == false){roll();}
+        
         }
-        const clicking = document.addEventListener('click', ()=>{
+        const clicking = document.addEventListener('click', (e)=>{
+            if (e.target.closest('#controlMenuButton') || isMenuOpening) {
+                return;
+            }
 
             play();
-            
         });
+        document.getElementById('openEditListButton').addEventListener('click', ()=>{
+            if (document.getElementById('inputEditList').style.display == "inline-block") {
+            document.getElementById('inputEditList').style.display = "none";
+            document.getElementById('inputEditSummit').style.display = "none";
+            document.getElementById('openEditListButton').style.borderBottom = "3px solid rgb(234, 231, 255)";
+            document.getElementById('openEditListButton').style.height = "50px";
+            document.getElementById('openEditListButton').style.paddingBottom= "0px";
+            }
+            else {
+            document.getElementById('inputEditList').value = itemlistOGText;
+            document.getElementById('inputEditList').style.display = "inline-block";
+            document.getElementById('inputEditSummit').style.display = "inline-block";
+            document.getElementById('openEditListButton').style.borderBottom = "none";
+            document.getElementById('openEditListButton').style.height = "88px";
+            document.getElementById('openEditListButton').style.paddingBottom= "42px";
+            }  
+        });
+
+
+        const controlMenu = {
+            openMenu(){
+                if (isMenuOpening == false){
+                    isMenuOpening = true;
+                    document.getElementById('menu').style.transform = "translateX(0%)";                    
+                }
+
+                else {
+                    isMenuOpening = false;
+                    document.getElementById('menu').style.transform = "translateX(-100%)";
+                }
+            },
+
+            resetlist(){
+                itemlistOG = itemlistOGText.split(',');
+                itemlist = [...itemlistOG]
+            },
+
+            changeWhetherCanDuplicate() {
+                if (canDuplicate){
+                    document.getElementById('dupbutton').innerHTML = "중복 룰렛으로 전환";
+                    canDuplicate = !canDuplicate;
+                }
+                else {
+                    document.getElementById('dupbutton').innerHTML = "비중복 룰렛으로 전환";
+                    canDuplicate = !canDuplicate;
+                }
+            }
+        };
+        document.getElementById('inputEditSummit').addEventListener('click', ()=>{
+            itemlistOGText=document.getElementById('inputEditList').value;
+            controlMenu.resetlist();
+        });
+
+
     </script>
 </body>
 </html>

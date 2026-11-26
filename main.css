@@ -15,6 +15,157 @@ html, body {
         inset 0 1px 0 #ffffff20;
 }
 
+#menu {
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 9999;
+    background: linear-gradient(
+        145deg,
+        #000818,
+        #000000
+    );
+    border-right: 2px solid rgb(0, 2, 17);
+    width: 250px;
+    height: 100vh;
+    transform: translateX(-100%);
+    transition: all ease 1s
+}
+
+.menuButton{
+    margin-bottom: -2px;
+
+    border-bottom: 3px solid rgb(234, 231, 255);
+    border-top : 3px solid rgb(234, 231, 255);
+    border-left : none;
+    border-right : none;
+    background:none;
+    font-size:20px;
+    width:220px;
+    height:50px;
+    margin-left:15px;
+    color:white;
+    font-weight: bold;
+    transition: (
+        background 0.2s ease,
+        color 0s ease
+    );
+}
+.menuButton:hover {
+    background: #ffffff10;
+}
+
+.menuButton:active {
+    color: #ffffff9d;
+}
+#openEditListButton {
+    margin-bottom: -2px;
+    padding-bottom: 0px;
+    border-bottom: 3px solid rgb(234, 231, 255);
+    border-top: 3px solid rgb(234, 231, 255);
+    border-left: none;
+    border-right: none;
+    background: none;
+    font-size: 20px;
+    width: 220px;
+    height: 50px;
+    margin-left: 15px;
+    color: white;
+    font-weight: bold;
+    transition: background 0.2s ease, color 0s ease;
+}
+#openEditListButton:hover {
+    background: #ffffff10;
+}
+
+#openEditListButton:active {
+    color: #ffffff9d;
+
+}
+#inputEditList {
+    position: absolute;
+    margin-left: 15px;
+    transform: translateY(-100%);
+    width: 179px;
+    height: 38px;
+    box-sizing: border-box;
+    padding: 0 10px;
+
+    background: #101827;
+    border: 2px solid #526078;
+    border-radius: 5px;
+
+    color: white;
+    font-size: 14px;
+    outline: none;
+    display:none;
+}
+
+#inputEditList::placeholder {
+    color: #8994a8;
+    font-size: 12px;
+}
+
+#inputEditList:focus {
+    border-color: #8baaff;
+}
+
+#inputEditSummit {
+    position: absolute;
+    width: 38px;
+    height: 38px;
+    transform: translateY(-100%);
+    margin-left: 197px;
+    box-sizing: border-box;
+
+    background: #173d2a;
+    border: 2px solid #36c878;
+    border-radius: 5px;
+
+    color: #5cff9b;
+    font-size: 17px;
+    font-weight: bold;
+    cursor: pointer;
+    display:none;
+}
+
+#inputEditSummit:hover {
+    background: #246440;
+}
+
+#inputEditSummit:active {
+    background: #36c878;
+    color: #10251a;
+}
+
+#controlMenuButton {
+    
+    position: absolute;
+    left: 255px;
+    transform: translate(20%,20%);
+    width: 40px;
+    height: 40px;
+
+    background: linear-gradient(
+        145deg,
+        #000000,
+        #000818
+    );
+    color: white;
+    border: none;
+    border-radius: 0 8px 8px 0;
+
+    font-size: 20px;
+    font-weight: bold;
+    cursor: pointer;
+
+    transition: background 0.2s ease;
+
+}
+#controlMenuButton:hover {
+    background: #414b65;
+}
+
 #titled{
     position:fixed;
     color: white;
@@ -185,3 +336,4 @@ html, body {
         0 4px 10px #0005,
         inset 0 1px 1px #ffffff20;
 }
+
