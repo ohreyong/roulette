@@ -23,14 +23,19 @@
         <button id="openEditListButton">리스트 수정</button> <br>
         <input id="inputEditList" placeholder="쉼표로 이름 구분">
         <button id="inputEditSummit">v</button>
-        <button class="menuButton">그저 버튼</button>
+        <button class="menuButton" onclick="controlMenu.openWinnerMenu();">당첨 기록</button>
+        <div id="winnerMenu">
+            <br><button class="menuButton" onclick="controlMenu.openWinnerMenu();">뒤로가기</button>
+            <button class="winnerText" id="nowinner">당첨기록 없음</button>
+        </div>
     </div>
     
 
     <script>
+        
         const tickSound = new Audio("./rouletteSound.MP3");
         tickSound.volume = 1.0;
-        let itemlistOGText = '김기백,김민근,김서영,김시온,김예은,김제희,김준서,박효은,심주완,오대성,유나은,이도경,이서현,이석준,이세한,이지미,이지윤,전은수,정주복,조도현,채서현,최선,최선웅,황동현,황윤정,황정우';
+        let itemlistOGText = '김기백,김민근,김서영,김시온,김예은,김제희,김준서,박효은,심주완,오대성,유나은,이도경,이서현,이석준,이세한,이지민,이지윤,전은수,정주복,조도현,채서현,최선,최선웅,황동현,황윤정,황정우';
         let itemlistOG = itemlistOGText.split(',');
         let itemlist = [];
         itemlist = [...itemlistOG];
@@ -45,8 +50,10 @@
         let itemmax = 0;
         let canDuplicate = false;
         let isMenuOpening = false;
+        let isWinnerMenuOpening = false;
 
-
+        document.getElementById('nowinner').style.color = "#d0d0d09d"
+        
         function rollingItem(){
             itemmax = itemlist.length;
             let rand = Math.floor(Math.random() * itemmax);
@@ -101,6 +108,7 @@
                     box.id = "selectedframe";
                     box.textContent = selected;
                     reel.appendChild(box);
+
                 }
                 else{
                     box.className = "item";
@@ -110,7 +118,10 @@
             }
             if (!canDuplicate){
                 for(let i = 0; i < itemlist.length; i++){
-                    if(itemlist[i] == selected){itemlist.splice(i,1);}
+                    if(itemlist[i] == selected){
+                        itemlist.splice(i,1);
+                        
+                    }
                 }
             }
             
@@ -145,6 +156,16 @@
             displayselection.style.opacity = "1"
             document.getElementById('selectedframe').style.border = "4px solid #fbbf24";
             document.getElementById('selectedframe').style.boxShadow = "0 0 6px #fbbf2480";
+
+            let winnerBox = document.createElement('button');
+            winnerBox.className = "winnerText";
+            winnerBox.textContent = selected;
+            document.getElementById('winnerMenu').appendChild(winnerBox);
+            if (document.getElementById('nowinner')){
+                document.getElementById('nowinner').remove();
+            }
+            
+
             await wait(2500);
             displayselection.style.opacity = "0";
             await wait(200);
@@ -155,7 +176,7 @@
         
         }
         const clicking = document.addEventListener('click', (e)=>{
-            if (e.target.closest('#controlMenuButton') || isMenuOpening) {
+            if (e.target.closest('#controlMenuButton') || e.target.closest('#menu')) {
                 return;
             }
 
@@ -207,13 +228,24 @@
                     document.getElementById('dupbutton').innerHTML = "비중복 룰렛으로 전환";
                     canDuplicate = !canDuplicate;
                 }
+            },
+
+            openWinnerMenu(){
+                if (isWinnerMenuOpening == false){
+                    isWinnerMenuOpening = true;
+                    document.getElementById('winnerMenu').style.transform = "translateX(0%)";                    
+                }
+
+                else {
+                    isWinnerMenuOpening = false;
+                    document.getElementById('winnerMenu').style.transform = "translateX(-100%)";
+                }
             }
         };
         document.getElementById('inputEditSummit').addEventListener('click', ()=>{
             itemlistOGText=document.getElementById('inputEditList').value;
             controlMenu.resetlist();
         });
-
 
     </script>
 </body>

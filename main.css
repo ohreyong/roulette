@@ -2,7 +2,7 @@
 html, body {
     background: linear-gradient(
         to top,
-        #000000,
+        #000114,
         #212533
     );
     margin: 0;
@@ -21,16 +21,64 @@ html, body {
     left: 0;
     z-index: 9999;
     background: linear-gradient(
-        145deg,
+        80deg,
         #000818,
         #000000
     );
-    border-right: 2px solid rgb(0, 2, 17);
+    border-right: 4px solid rgb(17, 20, 44);
+    width: 250px;
+    height: 100vh;
+    transform: translateX(-100%);
+    transition: all ease 1s;
+    box-shadow: 0 4px 15px #0005;
+}
+
+#winnerMenu {
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 9999;
+    background: linear-gradient(
+        80deg,
+        #000818,
+        #000000
+    );
+    box-shadow: 0 4px 15px #0005;
+    border-right: 4px solid rgb(17, 20, 44);
     width: 250px;
     height: 100vh;
     transform: translateX(-100%);
     transition: all ease 1s
 }
+
+.winnerText{
+
+    border-bottom: none;
+    border-top : none;
+    border-left : none;
+    border-right : none;
+    background:none;
+    text-align: center;
+    font-size:20px;
+    width:220px;
+    height:50px;
+    margin-left:15px;
+    color:white;
+    font-weight: bold;
+    transition: (
+        background 0.2s ease,
+        color 0s ease
+    );
+}
+.winnerText:hover {
+    background: #ffffff10;
+}
+
+.winnerText:active {
+    color: #ffffff9d;
+}
+
+
 
 .menuButton{
     margin-bottom: -2px;
@@ -153,7 +201,7 @@ html, body {
     );
     color: white;
     border: none;
-    border-radius: 0 8px 8px 0;
+    border-radius: 8px;
 
     font-size: 20px;
     font-weight: bold;
